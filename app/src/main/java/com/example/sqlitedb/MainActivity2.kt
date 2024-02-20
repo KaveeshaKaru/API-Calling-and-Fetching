@@ -10,8 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.liveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sqlitedb.AlbumAdapter
-import com.example.sqlitedb.DatabaseHelper
 import com.example.sqlitedb.api.ApiBodyItem
 import com.example.sqlitedb.api.ApiRequestBodyItems
 import com.example.sqlitedb.api.ApiResponseItems
@@ -60,7 +58,7 @@ class MainActivity2 : AppCompatActivity() {
 
                 if (albumList != null) {
                     // Clear existing items from the database
-                    clearItemsFromDatabase()
+//                    clearItemsFromDatabase()
 
                     // Insert new items into the database
                     for (albumItem in albumList) {
