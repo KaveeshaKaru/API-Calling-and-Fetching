@@ -30,6 +30,15 @@ class DatabaseHelper(private val context: Context) :
         private const val EMPLOYEE_COLUMN_EMAIL = "employee_email"
         private const val EMPLOYEE_COLUMN_ADDRESS = "address"
         private const val EMPLOYEE_COLUMN_PHONE = "phone"
+
+        // Items
+        const val ITEMS_TABLE = "Items"
+        const val ITEMS_COLUMN_ID = "items_id"
+        const val ITEMS_COLUMN_NAME = "items_name"
+        const val ITEMS_COLUMN_CODE = "items_code"
+        const val ITEMS_COLUMN_PRINTING_NAME = "items_printing_name"
+        const val ITEMS_COLUMN_PRICE = "items_price"
+
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -49,6 +58,18 @@ class DatabaseHelper(private val context: Context) :
                         "$EMPLOYEE_COLUMN_PHONE TEXT)"
                 )
         db?.execSQL(createEmployeeTableQuery)
+
+        // Items Table Creation
+        val createItemsTableQuery = (
+                "CREATE TABLE $ITEMS_TABLE (" +
+                        "$ITEMS_COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "$ITEMS_COLUMN_NAME TEXT, " +
+                        "$ITEMS_COLUMN_CODE TEXT, " +
+                        "$ITEMS_COLUMN_PRINTING_NAME TEXT, " +
+                        "$ITEMS_COLUMN_PRICE REAL)"
+                )
+        db?.execSQL(createItemsTableQuery)
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -160,20 +181,6 @@ class DatabaseHelper(private val context: Context) :
         return rowsDeleted
     }
 
-    //    fun editEmployee(employee: Employee): Int {
-//        val values = ContentValues().apply {
-//            put(EMPLOYEE_COLUMN_NAME, employee.name)
-//            put(EMPLOYEE_COLUMN_EMAIL, employee.email)
-//            put(EMPLOYEE_COLUMN_ADDRESS, employee.address)
-//            put(EMPLOYEE_COLUMN_PHONE, employee.phone)
-//        }
-//        val db = writableDatabase
-//        val whereClause = "$EMPLOYEE_COLUMN_ID = ?"
-//        val whereArgs = arrayOf(employee.id.toString())
-//
-//        return db.update(EMPLOYEE_TABLE_NAME, values, whereClause, whereArgs)
-//        db.close()
-//    }
     fun editEmployee(employee: Employee): Int {
         val values = ContentValues().apply {
             put(EMPLOYEE_COLUMN_NAME, employee.name)
@@ -222,6 +229,20 @@ class DatabaseHelper(private val context: Context) :
         document.close()
 
         return pdfPath
+    }
+
+    //////////////////////// Items table Queries  ////////////////////////////////////////
+
+    // Items Insert
+    fun insertItem(name: String, code: String, printingName: String, price: Double): Long {
+        val values = ContentValues().apply {
+            put(ITEMS_COLUMN_NAME, name)
+            put(ITEMS_COLUMN_CODE, code)
+            put(ITEMS_COLUMN_PRINTING_NAME, printingName)
+            put(ITEMS_COLUMN_PRICE, price)
+        }
+        val db = writableDatabase
+        return db.insert(ITEMS_TABLE, null, values)
     }
 
 

@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitInstance {
 
     companion object {
-        val mainURL = "https://api-staging-ez.azurewebsites.net/api/External_Api/Mobile_Api/"
+        val mainURL = "https://api-staging-ez.azurewebsites.net/"
 
         fun getRetrofitInstance(): Retrofit {
             return Retrofit.Builder()
