@@ -85,7 +85,6 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
     }
-
     private fun loginUser(email: String, password: String) {
         val requestBody = ApiRequestBody(
             apiBody = listOf(
@@ -122,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    // unsuccessful response
+                    // Unsuccessful response
                     runOnUiThread {
                         Toast.makeText(this@LoginActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
                     }
