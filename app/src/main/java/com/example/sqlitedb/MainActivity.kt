@@ -66,32 +66,6 @@ class MainActivity : AppCompatActivity() {
             deviceId = "41"
         )
 
-        // API call using Retrofit
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val response: Response<ApiResponse> = apiService.invoiceData(requestBody)
-//
-//                if (response.isSuccessful) {
-//                    // Handle the API response
-//                    val apiResponse = response.body()
-//                    runOnUiThread {
-//                        Toast.makeText(this@MainActivity, "API Request Successful", Toast.LENGTH_SHORT).show()
-//                        apiResponse?.message?.let {
-//                            // Show the message directly
-//                            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//                } else {
-//                    runOnUiThread {
-//                        Toast.makeText(this@MainActivity, "API Request Failed: ${response.message()}", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                runOnUiThread {
-//                    Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response: Response<ApiResponse> = apiService.invoiceData(requestBody)
@@ -107,8 +81,12 @@ class MainActivity : AppCompatActivity() {
                             // success
                             if (it.contains("Successfully", ignoreCase = true)) {
                                 // If successful, start InvoiceForm activity
+                                // After a successful API call
                                 val intent = Intent(this@MainActivity, InvoiceForm::class.java)
+                                intent.putExtra("responseMessage", apiResponse?.message)
                                 startActivity(intent)
+
+
                             }
                         }
                     }
