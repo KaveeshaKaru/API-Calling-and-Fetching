@@ -9,7 +9,7 @@ interface ApiService {
     suspend fun invokeApi(@Body requestBody: ApiRequestBody): Response<ApiResponse>
 
     @POST("api/External_Api/Mobile_Api/Invoke")
-    suspend fun invoiceData(@Body requestBody: ApiRequestBody2): Response<ApiResponse>
+    suspend fun invoiceData(@Body requestBody: ApiRequestBody2): Response<ApiResponseInvoice>
 
     @POST("/api/External_Api/Mobile_Api/Invoke")
     suspend fun getAlbums(@Body requestBody: ApiRequestBodyItems): Response<ApiResponseItems>

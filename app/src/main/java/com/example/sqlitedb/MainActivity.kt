@@ -3,10 +3,11 @@ package com.example.sqlitedb
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sqlitedb.api.ApiRequestBody2
-import com.example.sqlitedb.api.ApiResponse
+import com.example.sqlitedb.api.ApiResponseInvoice
 import com.example.sqlitedb.api.ApiService
 import com.example.sqlitedb.api.RetrofitInstance
 import com.example.sqlitedb.databinding.ActivityMainBinding
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response: Response<ApiResponse> = apiService.invoiceData(requestBody)
+                val response: Response<ApiResponseInvoice> = apiService.invoiceData(requestBody)
 
                 if (response.isSuccessful) {
                     // Handle the API response
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+                Log.e("MainActivity", "Error: ${e.message}", e)
             }
         }
 
