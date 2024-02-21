@@ -46,8 +46,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.viewInvoiceBtn.setOnClickListener {
-//            val intent = Intent(this, InvoiceForm::class.java )
-//            startActivity(intent)
             sendApiRequest()
         }
         binding.itemsBtn.setOnClickListener {
@@ -81,12 +79,8 @@ class MainActivity : AppCompatActivity() {
                             // success
                             if (it.contains("Successfully", ignoreCase = true)) {
                                 // If successful, start InvoiceForm activity
-                                // After a successful API call
                                 val intent = Intent(this@MainActivity, InvoiceForm::class.java)
-                                intent.putExtra("responseMessage", apiResponse?.message)
                                 startActivity(intent)
-
-
                             }
                         }
                     }

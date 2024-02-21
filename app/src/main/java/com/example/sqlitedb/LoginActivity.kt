@@ -68,16 +68,14 @@ class LoginActivity : AppCompatActivity() {
 
             // Field Validation
             if (loginEmail.isNotEmpty() && loginPassword.isNotEmpty()) {
-                // Call the login API only for specific values
-                if (loginEmail == "Admin2@accesswater.lk" && loginPassword == "Welcome#1") {
-                    loginUser(loginEmail, loginPassword)
-                } else {
-                    Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
-                }
+                // Call the login API for user authentication
+                loginUser(loginEmail, loginPassword)
             } else {
-                Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
+
 
         binding.signupRedirect.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
@@ -85,6 +83,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
     }
+
     private fun loginUser(email: String, password: String) {
         val requestBody = ApiRequestBody(
             apiBody = listOf(
@@ -107,48 +106,83 @@ class LoginActivity : AppCompatActivity() {
                     // Handle the successful response
                     val apiResponse = response.body()
                     if (apiResponse != null && apiResponse.statusCode == 200) {
-                        runOnUiThread {
-                            Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
+                        val responseBody = apiResponse.responseBody
+                        handleSuccessResponse(responseBody)
                     } else {
                         // API response indicating login failure
                         val message = apiResponse?.message ?: "Unknown Error"
                         runOnUiThread {
-                            Toast.makeText(this@LoginActivity, "Login Failed: $message", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Login Failed: $message",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 } else {
                     // Unsuccessful response
                     runOnUiThread {
-                        Toast.makeText(this@LoginActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Error: ${response.message()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             } catch (e: Exception) {
                 // Handle exceptions
                 runOnUiThread {
-                    Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
     }
+
+
+    private fun handleSuccessResponse(responseBodyList: List<Map<String, Any>>?) {
+        if (!responseBodyList.isNullOrEmpty()) {
+            val responseBody = responseBodyList[0]
+
+            // Check if "Doc_Msg" key is present in the response
+            if ("Doc_Msg" in responseBody) {
+                val docMsg = responseBody["Doc_Msg"] as? String
+
+                if (docMsg != null && docMsg == "Invalid Password") {
+                    runOnUiThread {
+                        Toast.makeText(this@LoginActivity, "Login Failed: $docMsg", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // Proceed with successful login
+                    runOnUiThread {
+                        Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            } else {
+                runOnUiThread {
+                    Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        } else {
+            runOnUiThread {
+                Toast.makeText(this@LoginActivity, "Error: Empty or null Response_Body", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+
+//    private fun handleErrorResponse(apiResponse: ApiResponse?) {
+//        val message = apiResponse?.message ?: "Unknown Error"
+//        runOnUiThread {
+//            Toast.makeText(this@LoginActivity, "Login Failed: $message", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

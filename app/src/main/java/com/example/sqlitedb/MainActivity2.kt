@@ -70,7 +70,7 @@ class MainActivity2 : AppCompatActivity() {
                         )
                     }
 
-                    // Update the UI or perform any other actions
+                    // Update the UI
                     albumAdapter.setData(albumList)
                 }
             } else {

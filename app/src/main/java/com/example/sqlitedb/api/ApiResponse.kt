@@ -10,6 +10,10 @@ data class ApiResponse(
     @SerializedName("Message")
     val message: String?,
 
+    @SerializedName("Response_Body")
+    val responseBody: List<Map<String, Any>>?
+
+
 
 
 )

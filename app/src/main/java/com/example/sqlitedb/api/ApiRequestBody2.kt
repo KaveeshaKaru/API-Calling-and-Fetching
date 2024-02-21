@@ -14,3 +14,4 @@ data class ApiRequestBody2(
     @SerializedName("Device_Id")
     val deviceId : String
 )
+
